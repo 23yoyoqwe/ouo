@@ -1,0 +1,34 @@
+import numpy as np 
+import matplotlib.pyplot as plt 
+import matplotlib.animation as animation 
+
+
+fig = plt.figure(figsize=(6, 6))
+ax = plt.gca()
+ax.grid()
+ln1, = ax.plot([], [], '-.', color='#FF1554',lw=2)
+ln2, = ax.plot([], [], '-', color='y', lw=4)
+t = np.linspace(0, 2*np.pi, 100)
+r_out = 1.5
+r_in = 0.5
+
+def init():
+    ax.set_xlim(-2, 2)
+    ax.set_ylim(-2, 2)
+    x_out = [r_out*np.cos(t[i]) for i in range(len(t))]
+    y_out = [r_out*np.sin(t[i]) for i in range(len(t))]
+    ln1.set_data(x_out, y_out)
+    return ln1,
+
+def update(i):
+    x_in = [(r_out-r_in)*np.cos(t[i])+r_in*np.cos(t[j]) for j in range(len(t))]
+    y_in = [(r_out-r_in)*np.sin(t[i])+r_in*np.sin(t[j]) for j in range(len(t))]
+    ln2.set_data(x_in, y_in)
+    return ln2,
+
+ani = animation.FuncAnimation(fig, update, range(len(t)), init_func=init, interval=5)
+
+
+plt.show()
+
+
